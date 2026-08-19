@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<title>iOS standalone rotation viewport desync</title>
+<style>
+  body { margin: 0; font-family: -apple-system, sans-serif; }
+  header {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 60px; background: #222; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .spacer { height: 60px; }
+  .stripe { height: 120px; display: flex; align-items: center; padding-left: 16px; }
+  .stripe:nth-of-type(odd) { background: #e8e8e8; }
+  #readout {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: #003; color: #fff; font: 12px/1.5 monospace;
+    padding: 8px; white-space: pre;
+  }
+</style>
+</head>
+<body>
+<header>position: fixed header (60px)</header>
+<div class="spacer"></div>
+<div class="stripe">1: install to home screen, open in portrait, stay scrolled to top, rotate to landscape.</div>
+<div class="stripe">2: a gap appears between the painted header and this content; vv.pageTop reads ≈ -59</div>
+<div class="stripe">3</div>
+<div class="stripe">4</div>
+<div class="stripe">5</div>
+<div class="stripe">6</div>
+<div class="stripe">7</div>
+<div class="stripe">8</div>
+<div class="stripe">9</div>
+<div class="stripe">10</div>
+<div class="stripe">11</div>
+<div class="stripe">12</div>
+<div class="stripe">13</div>
+<div class="stripe">14</div>
+<div class="stripe">15</div>
+<div class="stripe">16</div>
+<div class="stripe">17</div>
+<div class="stripe">18</div>
+<div class="stripe">19</div>
+<div class="stripe">20</div>
+<div id="readout"></div>
+<script>
+  const readout = document.getElementById("readout");
+  function update() {
+    const h = document.querySelector("header").getBoundingClientRect();
+    readout.textContent =
+      `vv.pageTop: ${visualViewport.pageTop.toFixed(1)}   ` +
+      `vv.offsetTop: ${visualViewport.offsetTop.toFixed(1)}\n` +
+      `header rect.top: ${h.top.toFixed(1)}   scrollY: ${scrollY.toFixed(1)}`;
+  }
+  visualViewport.addEventListener("resize", update);
+  visualViewport.addEventListener("scroll", update);
+  addEventListener("scroll", update, { passive: true });
+  update();
+</script>
+</body>
+</html>

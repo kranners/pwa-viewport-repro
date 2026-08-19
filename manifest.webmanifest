@@ -1,0 +1,5 @@
+{
+  "name": "Rotation Desync Repro",
+  "display": "standalone",
+  "start_url": "."
+}
